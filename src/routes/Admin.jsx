@@ -23,6 +23,14 @@ const Admin = () => {
         }
     };
 
+    const deletePost = async (id) => {
+        await blogFetch.delete(`/posts/${id}`);
+
+        // Para filtrar os posts após o method delete:
+        const filterPosts = posts.filter((post) => post.id !== id);
+        setPosts(filterPosts);
+    }
+
     useEffect(() => {
         getPosts();
     }, []);
@@ -32,11 +40,11 @@ const Admin = () => {
             <h1>Gerenciar Posts</h1>
             {posts.length === 0 ? (<p>Carregando...</p>) : (
                 posts.map((post) => (
-                    <div className="post">
+                    <div className="post" key={post.id}>
                         <h2>{post.title}</h2>
                         <div className="actions">
                             <button className="btn edit-btn">Editar</button>
-                            <button className="btn delete-btn">Excluir</button>
+                            <button className="btn delete-btn" onClick={() => deletePost(post.id)}>Excluir</button>
                         </div>
                     </div>
 
